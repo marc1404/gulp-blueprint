@@ -5,9 +5,11 @@
   "dependencies": {
     "gulp": "*",
     "gulp-sourcemaps": "*",
-    "gulp-concat": "*",
-    "gulp-babel": "*",
     "gulp-ng-annotate": "*",
-    "gulp-uglify": "*"
+    "gulp-uglify": "*",
+    "browserify": "*",
+    "babelify": "*",
+    "vinyl-source-stream": "*",
+    "vinyl-buffer": "*"
   }
 }

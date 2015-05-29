@@ -1,15 +1,22 @@
 var sourcemaps = require('gulp-sourcemaps');
-var concat = require('gulp-concat');
-var babel = require('gulp-babel');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
+var browserify = require('browserify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 module.exports = function(gulp){
     gulp.task('build', function(){
-        return gulp.src('public/js/**/*.js')
-            .pipe(sourcemaps.init())
-                .pipe(concat('bundle.js'))
-                .pipe(babel())
+        browserify('public/js/app.js', { debug: true })
+            .transform(babelify)
+            .bundle()
+            .on('error', function(err){
+                console.error(err.message);
+            })
+            .pipe(source('bundle.js'))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({ loadMaps: true }))
                 .pipe(ngAnnotate())
                 .pipe(uglify())
             .pipe(sourcemaps.write('.'))
