@@ -1,0 +1,13 @@
+{
+  "name": "gulp-blueprint",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "gulp": "*",
+    "gulp-sourcemaps": "*",
+    "gulp-concat": "*",
+    "gulp-babel": "*",
+    "gulp-ng-annotate": "*",
+    "gulp-uglify": "*"
+  }
+}

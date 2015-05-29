@@ -1,0 +1,1 @@
+{"version":3,"sources":["bundle.js","file1.js","file2.js"],"names":["console","log"],"mappings":"AACA,YCAAA,SAAAC,IAAA,SCAAD,QAAAC,IAAA","file":"bundle.js","sourcesContent":["// comment1\n'use strict';\n\nconsole.log('file1');\n// comment2\nconsole.log('file2');","// comment1\r\nconsole.log('file1');","// comment2\r\nconsole.log('file2');"],"sourceRoot":"/source/"}
