@@ -7,6 +7,7 @@
     "gulp-sourcemaps": "*",
     "gulp-ng-annotate": "*",
     "gulp-uglify": "*",
+    "gulp-plumber": "*",
     "browserify": "*",
     "babelify": "*",
     "vinyl-source-stream": "*",
