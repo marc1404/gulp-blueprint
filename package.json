@@ -1,6 +1,7 @@
 {
   "name": "gulp-blueprint",
   "version": "0.0.1",
+  "main": "gulp-blueprint",
   "private": true,
   "dependencies": {
     "gulp": "*",
@@ -11,6 +12,7 @@
     "browserify": "*",
     "babelify": "*",
     "vinyl-source-stream": "*",
-    "vinyl-buffer": "*"
+    "vinyl-buffer": "*",
+    "rimraf": "*"
   }
 }
