@@ -14,8 +14,8 @@ module.exports = {
     clean,
     assets,
     vendor,
-    js,
-    html
+    html,
+    js
 };
 
 function registerTasks(gulp){
