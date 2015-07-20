@@ -1,5 +1,5 @@
 {
-  "name": "gulp-blueprint",
+  "name": "gulp-js",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -11,7 +11,6 @@
     "browserify": "*",
     "babelify": "*",
     "vinyl-source-stream": "*",
-    "vinyl-buffer": "*",
-    "lodash": "*"
+    "vinyl-buffer": "*"
   }
 }
