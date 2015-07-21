@@ -18,7 +18,7 @@ module.exports = {
     js
 };
 
-function registerTasks(gulp){
+function registerTasks(){
     gulp.task('default', [ 'build' ]);
     gulp.task('build', [ 'clean', 'assets', 'vendor', 'html', 'js' ]);
 
