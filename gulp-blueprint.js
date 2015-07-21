@@ -1,110 +1,98 @@
 var gulp = require('gulp');
+var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
 var uglify = require('gulp-uglify');
+var plumber = require('gulp-plumber');
 var browserify = require('browserify');
 var babelify = require('babelify');
-var plumber = require('gulp-plumber');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var rimraf = require('rimraf');
+var _ = require('lodash');
 
-module.exports = {
-    registerTasks,
-    clean,
-    assets,
-    vendor,
-    html,
-    js
+var defaults = {
+    clean: 'public',
+    assets: {
+        src: [ 'assets/**/*', '!assets/sass{,/**}' ],
+        dest: 'public'
+    },
+    vendor: {
+        src: 'vendor/**/*',
+        dest: 'public/vendor'
+    },
+    html: {
+        src: 'app/client/**/*.html',
+        dest: 'public/html'
+    },
+    sass: {
+        src: 'assets/sass/**/*',
+        dest: 'public'
+    },
+    js: {
+        sourceFile: 'app/client/app.js',
+        outputFile: 'app.min.js',
+        dest: 'public'
+    },
+    watch: {
+        files: [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ],
+        tasks: [ 'build' ]
+    }
 };
 
-function registerTasks(){
+module.exports = function(options){
+    options = options || {};
+    options = _.defaultsDeep(options, defaults);
+
     gulp.task('default', [ 'build' ]);
-    gulp.task('build', [ 'clean', 'assets', 'vendor', 'html', 'js' ]);
+    gulp.task('build', [ 'clean', 'assets', 'vendor', 'html', 'sass', 'js' ]);
 
     gulp.task('clean', function(finished){
-        clean(finished);
+        rimraf(options.clean, finished);
     });
 
     gulp.task('assets', [ 'clean' ], function(){
-        return assets();
+        return copy(options.assets);
     });
 
     gulp.task('vendor', [ 'clean' ], function(){
-        return vendor();
+        return copy(options.vendor);
     });
 
     gulp.task('html', [ 'clean' ], function(){
-        return html();
+        return copy(options.html);
+    });
+
+    gulp.task('sass', [ 'clean' ], function(){
+        return gulp.src(options.sass.src)
+            .pipe(sourcemaps.init())
+                .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(options.sass.dest));
     });
 
     gulp.task('js', [ 'clean' ], function(){
-        return js();
+        return browserify(options.js.sourceFile, { debug: true })
+            .transform(babelify)
+            .bundle().on('error', console.error)
+            .pipe(plumber())
+            .pipe(source(options.js.outputFile))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({ loadMaps: true }))
+                .pipe(ngAnnotate())
+                .pipe(uglify())
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(options.js.dest));
     });
 
-    gulp.task('watch', [ 'build' ], function(){
-        return watch();
+    gulp.task('watch', options.watch.tasks, function(){
+        return gulp.watch(options.watch.files, options.watch.tasks);
     });
-}
-
-function clean(finished, folder){
-    folder = folder || 'public';
-
-    rimraf(folder, finished);
-}
-
-function assets(src, dest){
-    src = src || 'assets/**/*';
-    dest = dest || 'public';
-
-    return copy(src, dest);
-}
-
-function vendor(src, dest){
-    src = src || 'vendor/**/*';
-    dest = dest || 'public/vendor';
-
-    return copy(src, dest);
-}
-
-function html(src, dest){
-    src = src || 'app/client/**/*.html';
-    dest = dest || 'public/html';
-
-    return copy(src, dest);
-}
-
-function js(sourceFile, outputFile, dest){
-    sourceFile = sourceFile || 'app/client/app.js';
-    outputFile = outputFile || 'app.min.js';
-    dest = dest || 'public';
-
-    return browserify(sourceFile, { debug: true })
-        .transform(babelify)
-        .bundle()
-        .on('error', function(err){
-            console.error(err.message);
-        })
-        .pipe(plumber())
-        .pipe(source(outputFile))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(ngAnnotate())
-        .pipe(uglify())
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest(dest));
-}
-
-function watch(files, tasks){
-    files = files || [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ];
-    tasks = tasks || [ 'build' ];
-
-    return gulp.watch(files, tasks);
-}
+};
 
 /* public */
 /* private */
 
-function copy(src, dest){
-    return gulp.src(src).pipe(gulp.dest(dest));
+function copy(options){
+    return gulp.src(options.src).pipe(gulp.dest(options.dest));
 }

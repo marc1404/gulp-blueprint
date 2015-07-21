@@ -9,10 +9,12 @@
     "gulp-ng-annotate": "*",
     "gulp-uglify": "*",
     "gulp-plumber": "*",
+    "gulp-sass": "*",
     "browserify": "*",
     "babelify": "*",
     "vinyl-source-stream": "*",
     "vinyl-buffer": "*",
-    "rimraf": "*"
+    "rimraf": "*",
+    "lodash": "*"
   }
 }
