@@ -4,18 +4,18 @@
   "main": "gulp-blueprint",
   "private": true,
   "dependencies": {
-    "gulp": "*",
-    "gulp-sourcemaps": "*",
-    "gulp-ng-annotate": "*",
-    "gulp-uglify": "*",
-    "gulp-plumber": "*",
-    "gulp-sass": "*",
-    "gulp-rename": "*",
-    "browserify": "*",
-    "babelify": "*",
-    "vinyl-source-stream": "*",
-    "vinyl-buffer": "*",
-    "rimraf": "*",
-    "lodash": "*"
+    "babelify": "^6.1.3",
+    "browserify": "^11.0.0",
+    "gulp": "^3.9.0",
+    "gulp-ng-annotate": "^1.0.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "lodash": "^3.10.0",
+    "rimraf": "^2.4.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
