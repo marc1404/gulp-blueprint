@@ -10,6 +10,7 @@
     "gulp-uglify": "*",
     "gulp-plumber": "*",
     "gulp-sass": "*",
+    "gulp-rename": "*",
     "browserify": "*",
     "babelify": "*",
     "vinyl-source-stream": "*",

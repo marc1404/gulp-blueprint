@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
@@ -65,6 +66,7 @@ module.exports = function(options){
 
     gulp.task('sass', [ 'clean' ], function(){
         return gulp.src(options.sass.src)
+            .pipe(rename({ extname: '.min.css' }))
             .pipe(sourcemaps.init())
                 .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
             .pipe(sourcemaps.write('.'))
