@@ -38,6 +38,9 @@ var defaults = {
     },
     watch: {
         files: [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ],
+        options: {
+            debounceDelay: 1000
+        },
         tasks: [ 'build' ]
     },
     register: {
@@ -92,7 +95,7 @@ module.exports = function(options){
             .pipe(gulp.dest(options.js.dest));
     });
 
-    gulp.task('watch', options.watch.tasks, function(){
+    gulp.task('watch', options.watch.options, options.watch.tasks, function(){
         return gulp.watch(options.watch.files, options.watch.tasks);
     });
 

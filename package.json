@@ -1,6 +1,6 @@
 {
   "name": "gulp-blueprint",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "gulp-blueprint",
   "private": true,
   "dependencies": {
