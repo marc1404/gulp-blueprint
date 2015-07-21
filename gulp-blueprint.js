@@ -3,6 +3,7 @@ var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
+var ngRegister = require('gulp-ng-register');
 var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var browserify = require('browserify');
@@ -38,6 +39,10 @@ var defaults = {
     watch: {
         files: [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ],
         tasks: [ 'build' ]
+    },
+    register: {
+        src: 'app/client/**/*.{controller,directive,service}.js',
+        dest: 'app/client'
     }
 };
 
@@ -73,7 +78,7 @@ module.exports = function(options){
             .pipe(gulp.dest(options.sass.dest));
     });
 
-    gulp.task('js', [ 'clean' ], function(){
+    gulp.task('js', [ 'clean', 'register' ], function(){
         return browserify(options.js.sourceFile, { debug: true })
             .transform(babelify)
             .bundle().on('error', console.error)
@@ -89,6 +94,12 @@ module.exports = function(options){
 
     gulp.task('watch', options.watch.tasks, function(){
         return gulp.watch(options.watch.files, options.watch.tasks);
+    });
+
+    gulp.task('register', [ 'clean' ], function(){
+        return gulp.src(options.register.src)
+            .pipe(ngRegister())
+            .pipe(gulp.dest(options.register.dest));
     });
 };
 
