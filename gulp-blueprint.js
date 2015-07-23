@@ -95,8 +95,8 @@ module.exports = function(options){
             .pipe(gulp.dest(options.js.dest));
     });
 
-    gulp.task('watch', options.watch.options, options.watch.tasks, function(){
-        return gulp.watch(options.watch.files, options.watch.tasks);
+    gulp.task('watch', options.watch.tasks, function(){
+        return gulp.watch(options.watch.files, options.watch.options, options.watch.tasks);
     });
 
     gulp.task('register', [ 'clean' ], function(){
