@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var batch = require('gulp-batch');
 var rename = require('gulp-rename');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
@@ -32,15 +33,13 @@ var defaults = {
         dest: 'public'
     },
     js: {
-        sourceFile: 'app/client/app.js',
+        base: 'app/client',
+        sourceFile: 'app.js',
         outputFile: 'app.min.js',
         dest: 'public'
     },
     watch: {
         files: [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ],
-        options: {
-            debounceDelay: 1000
-        },
         tasks: [ 'build' ]
     },
     register: {
@@ -82,9 +81,12 @@ module.exports = function(options){
     });
 
     gulp.task('js', [ 'clean', 'register' ], function(){
-        return browserify(options.js.sourceFile, { debug: true })
+        return browserify(options.js.sourceFile, { debug: true, basedir: options.js.base })
             .transform(babelify)
-            .bundle().on('error', console.error)
+            .bundle()
+            .on('error', function(err){
+                console.error(err.message);
+            })
             .pipe(plumber())
             .pipe(source(options.js.outputFile))
             .pipe(buffer())
@@ -96,7 +98,9 @@ module.exports = function(options){
     });
 
     gulp.task('watch', options.watch.tasks, function(){
-        return gulp.watch(options.watch.files, options.watch.options, options.watch.tasks);
+        gulp.watch(options.watch.files, batch(function(events, done){
+            gulp.start(options.watch.tasks, done);
+        }));
     });
 
     gulp.task('register', [ 'clean' ], function(){
