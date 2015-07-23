@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
 var ngRegister = require('gulp-ng-register');
+var ngTemplates = require('gulp-angular-templatecache');
 var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var browserify = require('browserify');
@@ -12,107 +13,152 @@ var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var rimraf = require('rimraf');
-var _ = require('lodash');
 
-var defaults = {
-    clean: 'public',
-    assets: {
-        src: [ 'assets/**/*', '!assets/sass{,/**}' ],
-        dest: 'public'
-    },
-    vendor: {
-        src: 'vendor/**/*',
-        dest: 'public/vendor'
-    },
-    html: {
-        src: 'app/client/**/*.html',
-        dest: 'public/html'
-    },
-    sass: {
-        src: 'assets/sass/**/*',
-        dest: 'public'
-    },
-    js: {
-        base: 'app/client',
-        sourceFile: 'app.js',
-        outputFile: 'app.min.js',
-        dest: 'public'
-    },
-    watch: {
-        files: [ 'assets/**/*', 'vendor/**/*', 'app/client/**/*' ],
-        tasks: [ 'build' ]
-    },
-    register: {
-        src: 'app/client/**/*.{controller,directive,service}.js',
-        dest: 'app/client'
+module.exports = blueprint;
+
+function blueprint(modify){
+    var draft = nonElixirDraft();
+
+    if(modify){
+        modify(draft);
+
+        if(draft.elixir){
+            elixifyDraft(draft);
+        }
     }
-};
 
-module.exports = function(options){
-    options = options || {};
-    options = _.defaultsDeep(options, defaults);
+    register(draft);
+}
 
-    gulp.task('default', [ 'build' ]);
-    gulp.task('build', [ 'clean', 'assets', 'vendor', 'html', 'sass', 'js' ]);
+function nonElixirDraft(){
+    return {
+        elixir: false,
+        buildInto: 'public',
+        assets: 'assets',
+        vendor: 'vendor',
+        app: 'app/client',
+        templates: true
+    };
+}
 
-    gulp.task('clean', function(finished){
-        rimraf(options.clean, finished);
+function elixifyDraft(draft){
+    draft.assets = 'resources/assets';
+    draft.vendor = 'resources/vendor';
+    draft.app = 'resources/js';
+}
+
+function register(draft){
+    registerElixir(draft);
+
+    if(!draft.elixir){
+        registerNonElixir(draft);
+    }
+}
+
+function registerElixir(draft){
+    var mix = draft.elixir;
+    var cleanDependency = [];
+
+    if(!draft.elixir){
+        cleanDependency.push('clean');
+    }
+
+    gulp.task('index', cleanDependency, function(){
+        return copy(draft.assets + '/index.html', draft.buildInto);
     });
 
-    gulp.task('assets', [ 'clean' ], function(){
-        return copy(options.assets);
+    gulp.task('register', cleanDependency, function(){
+        return gulp.src(draft.app + '/**/*.{controller,directive,service}.js')
+            .pipe(ngRegister())
+            .pipe(gulp.dest(draft.app));
+    });
+
+    if(draft.templates) {
+        if(draft.elixir) {
+            mix.task('templates', draft.app + '/**/*.html');
+        }
+
+        gulp.task('templates', cleanDependency, function () {
+            return gulp.src(draft.app + '/**/*.html')
+                .pipe(ngTemplates({standalone: true}))
+                .pipe(gulp.dest(draft.app));
+        });
+    }
+
+    if(draft.elixir){
+        mix.task('index', draft.assets + '/index.html');
+        mix.task('register', draft.app + '/**/*.{controller,directive,service}.js');
+        mix.sass('app.scss');
+        mix.browserify('app.js');
+    }
+}
+
+function registerNonElixir(draft){
+    gulp.task('default', [ 'build' ]);
+
+    var buildDependencies = [ 'clean', 'index', 'vendor', 'sass', 'js' ];
+
+    if(!draft.templates){
+        buildDependencies.push('html');
+    }
+
+    gulp.task('build', buildDependencies);
+
+    gulp.task('clean', function(done){
+        rimraf(draft.buildInto, done);
     });
 
     gulp.task('vendor', [ 'clean' ], function(){
-        return copy(options.vendor);
+        return copy(draft.vendor + '/**/*', draft.buildInto + '/vendor');
     });
 
-    gulp.task('html', [ 'clean' ], function(){
-        return copy(options.html);
-    });
+    if(!draft.templates){
+        gulp.task('html', [ 'clean' ], function(){
+            return copy(draft.app + '/**/*.html', draft.buildInto + '/html');
+        });
+    }
 
     gulp.task('sass', [ 'clean' ], function(){
-        return gulp.src(options.sass.src)
+        return gulp.src(draft.assets + '/sass/**/*')
             .pipe(rename({ extname: '.min.css' }))
             .pipe(sourcemaps.init())
-                .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
+            .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
             .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(options.sass.dest));
+            .pipe(gulp.dest(draft.buildInto));
     });
 
-    gulp.task('js', [ 'clean', 'register' ], function(){
-        return browserify(options.js.sourceFile, { debug: true, basedir: options.js.base })
+    var jsDependencies = [ 'clean', 'register' ];
+
+    if(draft.templates){
+        jsDependencies.push('templates');
+    }
+
+    gulp.task('js', jsDependencies, function(){
+        return browserify('app.js', { debug: true, basedir: draft.app })
             .transform(babelify)
             .bundle()
             .on('error', function(err){
                 console.error(err.message);
             })
             .pipe(plumber())
-            .pipe(source(options.js.outputFile))
+            .pipe(source('app.min.js'))
             .pipe(buffer())
             .pipe(sourcemaps.init({ loadMaps: true }))
-                .pipe(ngAnnotate())
-                .pipe(uglify())
+            .pipe(ngAnnotate())
+            .pipe(uglify())
             .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(options.js.dest));
+            .pipe(gulp.dest(draft.buildInto));
     });
 
-    gulp.task('watch', options.watch.tasks, function(){
-        gulp.watch(options.watch.files, batch(function(events, done){
-            gulp.start(options.watch.tasks, done);
+    gulp.task('watch', [ 'build' ], function(){
+        gulp.watch([ draft.assets + '/**/*', draft.vendor + '/**/*', draft.app + '/**/*' ], batch(function(events, done){
+            events.on('end', function(){
+                gulp.start([ 'build' ], done);
+            });
         }));
     });
+}
 
-    gulp.task('register', [ 'clean' ], function(){
-        return gulp.src(options.register.src)
-            .pipe(ngRegister())
-            .pipe(gulp.dest(options.register.dest));
-    });
-};
-
-/* public */
-/* private */
-
-function copy(options){
-    return gulp.src(options.src).pipe(gulp.dest(options.dest));
+function copy(src, dest){
+    return gulp.src(src).pipe(gulp.dest(dest));
 }
