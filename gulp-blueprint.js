@@ -97,6 +97,7 @@ function registerElixir(draft){
 
     if(draft.elixir){
         mix.task('index', draft.assets + '/index.html');
+        mix.task('vendor', draft.vendor + '/**/*');
         mix.task('register', draft.app + '/**/*.{controller,directive,service}.js');
         mix.sass('app.scss');
         mix.browserify('app.js');
