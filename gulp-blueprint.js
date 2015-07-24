@@ -81,7 +81,7 @@ function registerElixir(draft){
         gulp.task('templates', cleanDependency, function () {
             return gulp.src(draft.app + '/**/*.html')
                 .pipe(ngTemplates({standalone: true}))
-                .pipe(gulp.dest(draft.app));
+                .pipe(gulp.dest(draft.buildInto));
         });
     }
 
