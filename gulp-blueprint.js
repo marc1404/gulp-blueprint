@@ -44,7 +44,7 @@ function nonElixirDraft(){
 function elixifyDraft(draft){
     draft.assets = 'resources/assets';
     draft.vendor = 'resources/vendor';
-    draft.app = 'resources/js';
+    draft.app = 'resources/assets/js';
 }
 
 function register(draft){
