@@ -67,6 +67,10 @@ function registerElixir(draft){
         return copy(draft.assets + '/index.html', draft.buildInto);
     });
 
+    gulp.task('vendor', cleanDependency, function(){
+        return copy(draft.vendor + '/**/*', draft.buildInto + '/vendor');
+    });
+
     gulp.task('register', cleanDependency, function(){
         return gulp.src(draft.app + '/**/*.{controller,directive,service}.js')
             .pipe(ngRegister())
@@ -112,10 +116,6 @@ function registerNonElixir(draft){
 
     gulp.task('clean', function(done){
         rimraf(draft.buildInto, done);
-    });
-
-    gulp.task('vendor', [ 'clean' ], function(){
-        return copy(draft.vendor + '/**/*', draft.buildInto + '/vendor');
     });
 
     if(!draft.templates){
