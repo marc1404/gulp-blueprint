@@ -159,9 +159,11 @@ function registerNonElixir(draft){
 
     gulp.task('watch', [ 'build' ], function(){
         gulp.watch([ draft.assets + '/**/*', draft.vendor + '/**/*', draft.app + '/**/*' ], batch(function(events, done){
-            events.on('end', function(){
-                gulp.start([ 'build' ], done);
-            });
+            events
+                .on('data', function(){})
+                .on('end', function(){
+                    gulp.start([ 'build' ], done);
+                });
         }));
     });
 }
