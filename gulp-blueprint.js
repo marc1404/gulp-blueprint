@@ -158,7 +158,7 @@ function registerNonElixir(draft){
     });
 
     gulp.task('watch', [ 'build' ], function(){
-        gulp.watch([ draft.assets + '/**/*', draft.vendor + '/**/*', draft.app + '/**/*' ], batch(function(events, done){
+        gulp.watch([ draft.assets + '/**/*', draft.vendor + '/**/*', draft.app + '/**/*', '!' + draft.app + '/register.js' ], batch(function(events, done){
             events
                 .on('data', function(){})
                 .on('end', function(){
