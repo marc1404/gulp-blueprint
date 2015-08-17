@@ -14,7 +14,7 @@ $ npm install --save-dev gulp-blueprint
 ```
   
 ## Usage
-In gulpfile.js
+*gulpfile.js*
 ```javascript
 var blueprint = require('gulp-blueprint');
 
