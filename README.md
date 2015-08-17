@@ -26,6 +26,9 @@ blueprint();
 $ npm install -g mocha  
 $ mocha
 ```
-  
+
+## Author
+[marc1404](https://github.com/marc1404)
+
 ## License
 [MIT](https://github.com/marc1404/gulp-blueprint/blob/master/LICENSE)
