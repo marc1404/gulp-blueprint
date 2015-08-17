@@ -1,8 +1,7 @@
 {
   "name": "gulp-blueprint",
-  "version": "0.0.10",
-  "main": "gulp-blueprint.js",
-  "private": true,
+  "version": "0.0.1",
+  "main": "lib/gulp-blueprint.js",
   "dependencies": {
     "babelify": "^6.1.3",
     "browserify": "^11.0.0",
@@ -21,6 +20,35 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
-    "laravel-elixir": "^3.0.5"
-  }
+    "laravel-elixir": "^3.0.5",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5",
+    "should": "^7.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marc1404/gulp-blueprint.git"
+  },
+  "author": "Marc Vornetran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marc1404/gulp-blueprint/issues"
+  },
+  "homepage": "https://github.com/marc1404/gulp-blueprint#readme",
+  "scripts": {
+    "test": "node --harmony --harmony_arrow_functions node_modules/istanbul/lib/cli.js cover --hook-run-in-context --report lcovonly node_modules/mocha/bin/_mocha"
+  },
+  "engines": {
+    "node": ">= 0.11.16",
+    "iojs": ">= 1.0.0"
+  },
+  "keywords": [
+    "gulp",
+    "angular",
+    "ng",
+    "register",
+    "require",
+    "bootstrap",
+    "angularjs"
+  ]
 }

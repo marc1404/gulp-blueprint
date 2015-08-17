@@ -1,3 +1,3 @@
-var blueprint = require('../../gulp-blueprint');
+var blueprint = require('../../lib/gulp-blueprint');
 
 blueprint();

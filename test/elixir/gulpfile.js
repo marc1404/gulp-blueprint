@@ -1,5 +1,5 @@
 var elixir = require('laravel-elixir');
-var blueprint = require('../../gulp-blueprint');
+var blueprint = require('../../lib/gulp-blueprint');
 
 elixir(function(mix){
     blueprint(function modify(draft){
