@@ -21,7 +21,7 @@ Features:
 - Copy vendor scripts
 - [Register Angular modules](https://www.npmjs.com/package/gulp-ng-register)
 - [Convert Angular templates to JavaScript](https://www.npmjs.com/package/gulp-angular-templatecache)
-- Compile SASS to a minified CSS stylesheet
+- Compile [SASS](http://sass-lang.com/) to a minified CSS stylesheet
 - [Browserify](https://www.npmjs.com/package/browserify), [Babelify](https://babeljs.io/) ES6 to ES5, [ngAnnotate](https://www.npmjs.com/package/gulp-ng-annotate) & [minify](https://www.npmjs.com/package/gulp-uglify)  JavaScript
 - Watch task to rebuild project on changes
 
