@@ -41,7 +41,6 @@ You can pass an options object to ```blueprint()```.
 - ```vendor``` string defaults to ```'vendor'```, specify where vendor files can be found
 - ```app``` string defaults to ```'app/client'```, specify where your client-side JavaScript can be found
 - ```templates``` boolean defaults to ```false```, whether Angular templates should be converted to JavaScript
-- ```register``` string defaults to ```options.app```, destination of the generated *register.js* file
 
 ## Test
 ```
