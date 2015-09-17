@@ -17,7 +17,7 @@ $ npm install --save-dev gulp-blueprint
 ## Description
 This package can be used to setup many common [gulp](https://www.npmjs.com/package/gulp) tasks.  
 Features:  
-- Copy ```index.html``` from assets folder
+- Copy HTML files from assets
 - Copy vendor scripts
 - [Register Angular modules](https://www.npmjs.com/package/gulp-ng-register)
 - [Convert Angular templates to JavaScript](https://www.npmjs.com/package/gulp-angular-templatecache)
