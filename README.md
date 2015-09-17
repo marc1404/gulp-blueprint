@@ -40,7 +40,7 @@ You can pass an options object to ```blueprint()```.
 - ```assets``` string defaults to ```'assets'```, specify where assets can be found
 - ```vendor``` string defaults to ```'vendor'```, specify where vendor files can be found
 - ```app``` string defaults to ```'app/client'```, specify where your client-side JavaScript can be found
-- ```templates``` boolean defaults to ```false```, whether Angular templates should be converted to JavaScript
+- ```templates``` boolean defaults to ```true```, whether Angular templates should be converted to JavaScript
 
 ## Test
 ```
