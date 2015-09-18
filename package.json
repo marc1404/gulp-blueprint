@@ -1,7 +1,7 @@
 {
   "name": "gulp-blueprint",
   "description": "Setup gulp with many common tasks in seconds!",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "lib/gulp-blueprint.js",
   "dependencies": {
     "gulp": "^3.9.0",
