@@ -6,7 +6,7 @@
   "dependencies": {
     "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.7.0",
-    "gulp-blueprint-babel": "0.0.6",
+    "gulp-blueprint-babel": "0.0.7",
     "gulp-blueprint-sass": "0.0.3",
     "gulp-blueprint-watch": "0.0.4",
     "gulp-ng-register": "^0.0.5",
