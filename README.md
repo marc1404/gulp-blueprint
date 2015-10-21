@@ -32,27 +32,15 @@ var blueprint = require('gulp-blueprint');
 
 blueprint();
 ```
-
-*gulpfile.js* using Laravel Elixir
-```javascript
-var elixir = require('laravel-elixir');
-var blueprint = require('gulp-blueprint');
-
-elixir(function(mix){
-    blueprint(function modify(draft){
-        draft.elixir = mix;
-    });
-});
-```
   
 ## Options
 You can pass an options object to ```blueprint()```.
-- ```elixir``` boolean defaults to ```false```, pass the [Elixir](https://www.npmjs.com/package/laravel-elixir) mix object to automatically configure *gulp-blueprint* for [Elixir](https://www.npmjs.com/package/laravel-elixir)
 - ```buildInto``` string defaults to ```'public'```, specify the build folder
 - ```assets``` string defaults to ```'assets'```, specify where assets can be found
 - ```vendor``` string defaults to ```'vendor'```, specify where vendor files can be found
 - ```app``` string defaults to ```'app/client'```, specify where your client-side JavaScript can be found
 - ```templates``` boolean defaults to ```true```, whether Angular templates should be converted to JavaScript
+- ```proxy``` string defaults to ```'localhost:8000'```, proxy option for [Browsersync](https://www.npmjs.com/package/browser-sync).
 
 ## Test
 ```
