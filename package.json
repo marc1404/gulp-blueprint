@@ -1,21 +1,20 @@
 {
   "name": "gulp-blueprint",
   "description": "Setup gulp with many common tasks in seconds!",
-  "version": "0.2.8",
+  "version": "0.3.8",
   "main": "lib/gulp-blueprint.js",
   "dependencies": {
     "gulp": "^3.9.0",
-    "gulp-angular-templatecache": "^1.7.0",
-    "gulp-blueprint-babel": "0.0.7",
-    "gulp-blueprint-sass": "0.0.3",
-    "gulp-blueprint-watch": "0.0.4",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-blueprint-babel": "^0.0.8",
+    "gulp-blueprint-sass": "^0.0.3",
+    "gulp-blueprint-watch": "^0.1.6",
     "gulp-ng-register": "^0.0.5",
-    "rimraf": "^2.4.2"
+    "rimraf": "^2.4.3"
   },
   "devDependencies": {
-    "istanbul": "^0.3.17",
-    "laravel-elixir": "^3.2.4",
-    "mocha": "^2.2.5"
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3"
   },
   "repository": {
     "type": "git",
@@ -30,10 +29,6 @@
   "scripts": {
     "test": "node --harmony --harmony_arrow_functions node_modules/istanbul/lib/cli.js cover --hook-run-in-context --report lcovonly node_modules/mocha/bin/_mocha -- \"test/**/{test,gulpfile}.js\""
   },
-  "engines": {
-    "node": ">= 0.11.16",
-    "iojs": ">= 1.0.0"
-  },
   "keywords": [
     "gulp",
     "blueprint",
@@ -47,6 +42,8 @@
     "register",
     "require",
     "bootstrap",
-    "angularjs"
+    "angularjs",
+    "browser",
+    "sync"
   ]
 }
